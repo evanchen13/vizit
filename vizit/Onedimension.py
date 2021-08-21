@@ -91,7 +91,8 @@ class Cat(Visualization):
     
     def plot_waffle(self):
         
-        """Function to plot a waffle chart with each unique value in the specified variable getting a certain number of blocks out of 100, each representing 1% of the total counts.
+        """Function to plot a waffle chart with each unique value in the specified variable getting a certain number of blocks out of 100, 
+        each representing 1% of the total counts.
         
         Args:
             None
@@ -178,7 +179,8 @@ class Num(Visualization):
         """Function to create bins for the specified variable that will be used in visualizations, using the specified bin size.
         
         Args:
-            bin_size (float): if scale is 'linear', this is the value that is added between each bin; if scale is 'log', this is the value that is multiplied between each bin
+            bin_size (float): if scale is 'linear', this is the value that is added between each bin; 
+                              if scale is 'log', this is the value that is multiplied between each bin
             scale (string): type of scale applied to the bins
             
         Returns:

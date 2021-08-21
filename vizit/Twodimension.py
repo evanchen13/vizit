@@ -52,7 +52,8 @@ class CatCat(Visualization):
     
     def plot_clustered_bar(self, rotate=False, normalize=False, **kwargs):
         
-        """Function to plot a clustered bar chart with counts or proportions, with the unique values of var1 as labels on the specified axis and unique values of var2 as different colored bars.
+        """Function to plot a clustered bar chart with counts or proportions, 
+        with the unique values of var1 as labels on the specified axis and unique values of var2 as different colored bars.
         
         Args:
             rotate (bool): if True, the labels are plotted on the y-axis and the counts or proportions on the x-axis
@@ -106,7 +107,8 @@ class CatCat(Visualization):
         
     def plot_stacked_bar(self, var1_order=None, var2_order=None, rotate=False, normalize=False, **kwargs):
         
-        """Function to plot a stacked bar chart with counts or proportions, with the unique values of var1 as labels on the specified axis and the unique values of var2 as different colored bars.
+        """Function to plot a stacked bar chart with counts or proportions, 
+        with the unique values of var1 as labels on the specified axis and the unique values of var2 as different colored bars.
         
         Args:
             var1_order (list or array): order to plot the labels for var1 on the specified axis
@@ -131,7 +133,8 @@ class CatCat(Visualization):
         for i in range(len(var2_order)):
                 category = var2_order[i]
                 # find the count of var1 for each value of var2; if there is no count of var1 for that value of var2, use 0
-                var1_category = self.data[self.data[self.var2] == category][self.var1].value_counts().reindex(self.data[self.var1].unique(), fill_value=0)
+                var1_category = self.data[self.data[self.var2] == category][self.var1].value_counts()
+                var1_category = var1_category.reindex(self.data[self.var1].unique(), fill_value=0)
                 if normalize:
                     var1_category = var1_category/var1_counts
                 if rotate:
@@ -197,14 +200,19 @@ class CatNum(Visualization):
             string: characteristics of the CatNum instance
         """
         
-        return 'Visualization Type: Two-Dimensional Categorical & Numerical\nTitle: {}\nCategorical Variable: {}\nNumerical Variable: {}'.format(self.title, self.cat_var, self.num_var)
+        return 'Visualization Type: Two-Dimensional Categorical & Numerical\nTitle: {}\nCategorical Variable: {}\nNumerical Variable: {}'.format(
+            self.title,
+            self.cat_var,
+            self.num_var
+            )
     
     def create_bin_size(self, bin_size, scale='linear'):
         
         """Function to create bins for num_var that will be used in visualizations, using the specified bin size.
         
         Args:
-            bin_size (float): if scale is 'linear', this is the value that is added between each bin; if scale is 'log', this is the value that is multiplied between each bin
+            bin_size (float): if scale is 'linear', this is the value that is added between each bin; 
+                              if scale is 'log', this is the value that is multiplied between each bin
             scale (string): type of scale applied to the bins
             
         Returns:
@@ -415,7 +423,8 @@ class NumNum(Visualization):
         """Function to create bins for both numerical variables that will be used in visualizations, using the specified bin sizes.
         
         Args:
-            bins_size (list): list with two floats; for each, if scale is 'linear', this is the value that is added between each bin; if scale is 'log', this is the value that is multiplied between each bin
+            bins_size (list): list with two floats; for each, if scale is 'linear', this is the value that is added between each bin; 
+                              if scale is 'log', this is the value that is multiplied between each bin
             scales (list): list with two strings; each is the type of scale applied to the bins
             
         Returns:
