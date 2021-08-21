@@ -29,10 +29,11 @@ class CatCat(Visualization):
             None
             
         Returns:
-            string: characteristics of the CatCat instance
+            summary (string): characteristics of the CatCat instance
         """
         
-        return 'Visualization Type: Two-Dimensional Categorical & Categorical\nTitle: {}\nVariable 1: {}\nVariable 2: {}'.format(self.title, self.var1, self.var2)
+        summary = 'Visualization Type: Two-Dimensional Categorical & Categorical\nTitle: {}\nVariable 1: {}\nVariable 2: {}'.format(self.title, self.var1, self.var2)
+        return summary
     
     def switch_var(self):
         
@@ -197,14 +198,15 @@ class CatNum(Visualization):
             None
             
         Returns:
-            string: characteristics of the CatNum instance
+            summary (string): characteristics of the CatNum instance
         """
         
-        return 'Visualization Type: Two-Dimensional Categorical & Numerical\nTitle: {}\nCategorical Variable: {}\nNumerical Variable: {}'.format(
+        summary = 'Visualization Type: Two-Dimensional Categorical & Numerical\nTitle: {}\nCategorical Variable: {}\nNumerical Variable: {}'.format(
             self.title,
             self.cat_var,
             self.num_var
             )
+        return summary
     
     def create_bin_size(self, bin_size, scale='linear'):
         
@@ -397,10 +399,11 @@ class NumNum(Visualization):
             None
             
         Returns:
-            string: characteristics of the NumNum instance
+            summary (string): characteristics of the NumNum instance
         """
         
-        return 'Visualization Type: Two-Dimensional Numerical & Numerical\nTitle: {}\nVariable 1: {}\nVariable 2: {}'.format(self.title, self.var1, self.var2)
+        summary = 'Visualization Type: Two-Dimensional Numerical & Numerical\nTitle: {}\nVariable 1: {}\nVariable 2: {}'.format(self.title, self.var1, self.var2)
+        return summary
     
     def switch_var(self):
         

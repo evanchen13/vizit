@@ -29,10 +29,11 @@ class Cat(Visualization):
             None
             
         Returns:
-            string: characteristics of the Cat instance
+            summary (string): characteristics of the Cat instance
         """
         
-        return 'Visualization Type: One-Dimensional Categorical\nTitle: {}\nVariable: {}'.format(self.title, self.var)
+        summary = 'Visualization Type: One-Dimensional Categorical\nTitle: {}\nVariable: {}'.format(self.title, self.var)
+        return summary
         
     def plot_bar(self, rotate=False, normalize=False, color=sb.color_palette()[0], **kwargs):
         
@@ -169,10 +170,11 @@ class Num(Visualization):
             None
             
         Returns:
-            string: characteristics of the Num instance
+            summary (string): characteristics of the Num instance
         """
         
-        return 'Visualization Type: One-Dimensional Numerical\nTitle: {}\nVariable: {}'.format(self.title, self.var)
+        summary = 'Visualization Type: One-Dimensional Numerical\nTitle: {}\nVariable: {}'.format(self.title, self.var)
+        return summary
     
     def create_bin_size(self, bin_size, scale='linear'):
         
