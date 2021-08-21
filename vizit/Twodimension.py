@@ -158,7 +158,7 @@ class CatCat(Visualization):
         """Function to plot a visualization with two categorical variables.
         
         Args:
-            kind (string): type of visualization to plot
+            kind (string): type of visualization to plot; can be 'clustered_bar', 'heatmap', or 'stacked_bar'
             
         Returns:
             None
@@ -356,7 +356,7 @@ class CatNum(Visualization):
         """Function to plot a visualization with one categorical variable and one numerical variable.
         
         Args:
-            kind (string): type of visualization to plot
+            kind (string): type of visualization to plot; can be 'violin', 'box', 'facet', 'bar', or 'point'
             
         Returns:
             None
@@ -569,7 +569,7 @@ class NumNum(Visualization):
         """Function to plot a visualization with two numerical variables.
         
         Args:
-            kind (string): type of visualization to plot
+            kind (string): type of visualization to plot; can be 'scatter', 'heatmap', 'bar', or 'point'
             
         Returns:
             None

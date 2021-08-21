@@ -132,7 +132,7 @@ class Cat(Visualization):
         """Function to plot a visualization with one categorical variable.
         
         Args:
-            kind (string): type of visualization to plot
+            kind (string): type of visualization to plot; can be 'bar', 'pie', or 'waffle'
             
         Returns:
             None
@@ -226,7 +226,7 @@ class Num(Visualization):
         """Function to plot a visualization with one numerical variable.
         
         Args:
-            kind (string): type of visualization to plot
+            kind (string): type of visualization to plot; 'hist' is the only valid value
             
         Returns:
             None
