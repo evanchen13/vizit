@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sb
+import warnings
 from .Generalviz import Visualization
 
 class CatCat(Visualization):
@@ -163,14 +164,13 @@ class CatCat(Visualization):
             None
         """
         
-        try:
-            if kind == 'clustered_bar':
-                self.plot_clustered_bar()
-            elif kind == 'heatmap':
-                self.plot_heatmap()
-            elif kind == 'stacked_bar':
-                self.plot_stacked_bar()
-        except:
+        if kind == 'clustered_bar':
+            self.plot_clustered_bar()
+        elif kind == 'heatmap':
+            self.plot_heatmap()
+        elif kind == 'stacked_bar':
+            self.plot_stacked_bar()
+        else:
             raise ValueError("Valid values for the kind parameter include 'clustered_bar', 'heatmap', and 'stacked_bar'")
 
 class CatNum(Visualization):
@@ -221,14 +221,13 @@ class CatNum(Visualization):
             bins (array): bin boundaries
         """
         
-        try:
-            if scale == 'linear':
-                bins = np.arange(self.data[self.num_var].min(), self.data[self.num_var].max()+bin_size, bin_size)
-            elif scale == 'log':
-                bins = 10**np.arange(np.log10(self.data[self.num_var].min()), np.log10(self.data[self.num_var].max())+np.log10(bin_size), np.log10(bin_size))
-            return bins
-        except:
+        if scale == 'linear':
+            bins = np.arange(self.data[self.num_var].min(), self.data[self.num_var].max()+bin_size, bin_size)
+        elif scale == 'log':
+            bins = 10**np.arange(np.log10(self.data[self.num_var].min()), np.log10(self.data[self.num_var].max())+np.log10(bin_size), np.log10(bin_size))
+        else:
             raise ValueError("Valid values for the scale parameter include 'linear' and 'log'")
+        return bins
     
     def plot_violin(self, scale='linear', rotate=False, color=sb.color_palette()[0], **kwargs):
         
@@ -292,9 +291,12 @@ class CatNum(Visualization):
             None
         """
         
+        supported_scales = ['linear', 'log']
         # create bins if a logarithmic scale is used and bin boundaries are not specified
         if scale == 'log' and type(bins) == int:
             bins = np.logspace(np.log10(self.data[self.num_var].min()), np.log10(self.data[self.num_var].max()), bins+1)
+        elif scale not in supported_scales and type(bins) == int:
+            warnings.warn("Integer values for the bins parameter should only be used when the scale parameter is 'linear' or 'log'")
         if normalize:
             g = sb.displot(data=self.data, x=self.num_var, col=self.cat_var, bins=bins, col_wrap=col_wrap, stat='probability', common_norm=False, **kwargs)
         else:
@@ -360,18 +362,17 @@ class CatNum(Visualization):
             None
         """
         
-        try:
-            if kind == 'violin':
-                self.plot_violin()
-            elif kind == 'box':
-                self.plot_box()
-            elif kind == 'facet':
-                self.plot_facet()
-            elif kind == 'bar':
-                self.plot_bar()
-            elif kind == 'point':
-                self.plot_point()
-        except:
+        if kind == 'violin':
+            self.plot_violin()
+        elif kind == 'box':
+            self.plot_box()
+        elif kind == 'facet':
+            self.plot_facet()
+        elif kind == 'bar':
+            self.plot_bar()
+        elif kind == 'point':
+            self.plot_point()
+        else:
             raise ValueError("Valid values for the kind parameter include 'violin', 'box', 'facet', 'bar', and 'point'")
         
 class NumNum(Visualization):
@@ -435,17 +436,16 @@ class NumNum(Visualization):
         """
     
         bins_list = []
-        try:
-            for i in range(2):
-                if scales[i] == 'linear':
-                    bins = np.arange(self.data[self.var1].min(), self.data[self.var1].max()+bins_size[i], bins_size[i])
-                elif scales[i] == 'log':
-                    bins = 10**np.arange(np.log10(self.data[self.var1].min()), np.log10(self.data[self.var1].max())+np.log10(bins_size[i]), np.log10(bins_size[i]))
-                bins_list.append(bins)
-                bins_tuple = tuple(bins_list)
-            return bins_tuple
-        except:
-            raise ValueError("Valid values for the scale parameter include 'linear' and 'log'")
+        for i in range(2):
+            if scales[i] == 'linear':
+                bins = np.arange(self.data[self.var1].min(), self.data[self.var1].max()+bins_size[i], bins_size[i])
+            elif scales[i] == 'log':
+                bins = 10**np.arange(np.log10(self.data[self.var1].min()), np.log10(self.data[self.var1].max())+np.log10(bins_size[i]), np.log10(bins_size[i]))
+            else:
+                raise ValueError("Valid values for the scale parameter include 'linear' and 'log'")
+            bins_list.append(bins)
+            bins_tuple = tuple(bins_list)
+        return bins_tuple
     
     def plot_scatter(self, var1_scale='linear', var2_scale='linear', **kwargs):
         
@@ -483,10 +483,15 @@ class NumNum(Visualization):
         """
         
         var_list = [self.var1, self.var2]
+        supported_scales = ['linear', 'log']
         for i in range(2):
             # create bins if a logarithmic scale is used and bin boundaries are not specified
             if scales[i] == 'log' and type(bins[i]) == int:
                 bins[i] = np.logspace(np.log10(self.data[var_list[i]].min()), np.log10(self.data[var_list[i]].max()), bins[i]+1)
+            elif scales[i] not in supported_scales and type(bins[i]) == int:
+                warning = "Integer values in the list for the bins parameter should only be used "+\
+                          "when the corresponding value in the list for the scale parameter is 'linear' or 'log'"
+                warnings.warn(warning)
         plt.hist2d(data=self.data, x=self.var1, y=self.var2, bins=bins, cmin=cmin, cmap=cmap, **kwargs)
         plt.colorbar(label=cbar_label)
         plt.xscale(scales[0])
@@ -507,9 +512,12 @@ class NumNum(Visualization):
             None
         """
         
+        supported_scales = ['linear', 'log']
         # create bins if a logarithmic scale is used and bin boundaries are not specified
         if scale == 'log' and type(bins) == int:
             bins = np.logspace(np.log10(self.data[self.var1].min()), np.log10(self.data[self.var1].max()*1.001), bins+1)
+        elif scale not in supported_scales and type(bins) == int:
+            warnings.warn("Integer values for the bins parameter should only be used when the scale parameter is 'linear' or 'log'")
         # divide the records in the dataset into the specified bins
         bins_group = pd.cut(self.data[self.var1], bins, right=False, include_lowest=True, labels=False).astype(int)
         count_per_bin = self.data.groupby([bins_group]).size()
@@ -534,11 +542,14 @@ class NumNum(Visualization):
             None
         """
         
+        supported_scales = ['linear', 'log']
         # create bins if bin boundaries are not specified
         if scale == 'linear' and type(bins) == int:
             bins = np.linspace(self.data[self.var1].min(), self.data[self.var1].max()*1.001, bins+1)
         elif scale == 'log' and type(bins) == int:
             bins = np.logspace(np.log10(self.data[self.var1].min()), np.log10(self.data[self.var1].max()*1.001), bins+1)
+        elif scale not in supported_scales and type(bins) == int:
+            warnings.warn("Integer values for the bins parameter should only be used when the scale parameter is 'linear' or 'log'")
         bins_center = (bins[:-1]+bins[1:])/2
         # divide the records in the dataset into the specified bins
         bins_group = pd.cut(self.data[self.var1], bins, include_lowest=True)
@@ -564,14 +575,13 @@ class NumNum(Visualization):
             None
         """
         
-        try:
-            if kind == 'scatter':
-                self.plot_scatter()
-            elif kind == 'heatmap':
-                self.plot_heatmap()
-            elif kind == 'bar':
-                self.plot_bar()
-            elif kind == 'point':
-                self.plot_point()
-        except:
+        if kind == 'scatter':
+            self.plot_scatter()
+        elif kind == 'heatmap':
+            self.plot_heatmap()
+        elif kind == 'bar':
+            self.plot_bar()
+        elif kind == 'point':
+            self.plot_point()
+        else:
             raise ValueError("Valid values for the kind parameter include 'scatter', 'heatmap', 'bar', and 'point'")

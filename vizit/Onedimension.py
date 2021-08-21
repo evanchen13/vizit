@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sb
+import warnings
 from .Generalviz import Visualization
 
 class Cat(Visualization):
@@ -137,14 +138,13 @@ class Cat(Visualization):
             None
         """
         
-        try:
-            if kind == 'bar':
-                self.plot_bar()
-            elif kind == 'pie':
-                self.plot_pie()
-            elif kind == 'waffle':
-                self.plot_waffle()
-        except:
+        if kind == 'bar':
+            self.plot_bar()
+        elif kind == 'pie':
+            self.plot_pie()
+        elif kind == 'waffle':
+            self.plot_waffle()
+        else:
             raise ValueError("Valid values for the kind parameter include 'bar', 'pie', and 'waffle'")
 
 class Num(Visualization):
@@ -189,14 +189,13 @@ class Num(Visualization):
             bins (array): bin boundaries
         """
         
-        try:
-            if scale == 'linear':
-                bins = np.arange(self.data[self.var].min(), self.data[self.var].max()+bin_size, bin_size)
-            elif scale == 'log':
-                bins = 10**np.arange(np.log10(self.data[self.var].min()), np.log10(self.data[self.var].max())+np.log10(bin_size), np.log10(bin_size))
-            return bins
-        except:
+        if scale == 'linear':
+            bins = np.arange(self.data[self.var].min(), self.data[self.var].max()+bin_size, bin_size)
+        elif scale == 'log':
+            bins = 10**np.arange(np.log10(self.data[self.var].min()), np.log10(self.data[self.var].max())+np.log10(bin_size), np.log10(bin_size))
+        else:
             raise ValueError("Valid values for the scale parameter include 'linear' and 'log'")
+        return bins
              
     def plot_hist(self, bins=10, scale='linear', **kwargs):
         
@@ -211,9 +210,12 @@ class Num(Visualization):
             None
         """
     
+        supported_scales = ['linear', 'log']
         # create bins if a logarithmic scale is used and bin boundaries are not specified
         if scale == 'log' and type(bins) == int:
             bins = np.logspace(np.log10(self.data[self.var].min()), np.log10(self.data[self.var].max()), bins+1)
+        elif scale not in supported_scales and type(bins) == int:
+            warnings.warn("Integer values for the bins parameter should only be used when the scale parameter is 'linear' or 'log'")
         plt.hist(data=self.data, x=self.var, bins=bins, **kwargs)
         plt.xscale(scale)
         plt.title(self.title)
@@ -230,8 +232,7 @@ class Num(Visualization):
             None
         """
         
-        try:
-            if kind == 'hist':
-                self.plot_hist()
-        except:
+        if kind == 'hist':
+            self.plot_hist()
+        else:
             raise ValueError("Valid values for the kind parameter include 'hist'")
